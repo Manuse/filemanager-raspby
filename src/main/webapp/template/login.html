@@ -1,0 +1,14 @@
+<div>
+    <form ng-submit="vm.login()">
+        nombre
+        <input type="text" ng-model="vm.username"> contraseña
+        <input type="text" ng-model="vm.password">
+            <label>
+                <input type="checkbox" ng-model="vm.rememberMe"/><span> Remember me</span>
+            </label>
+            <span ng-show="vm.authenticationError()" class="help-block">
+                Please check your credentials and try again.
+            </span>
+        <input type="submit" value="enviar">
+    </form>
+</div>
