@@ -21,7 +21,7 @@ public class AccessPathServiceImpl implements AccessPathService{
 	private AccessPathRepository accessPathRepository;
 
 	@Override
-	@Transactional
+	@Transactional(readOnly=true)
 	public boolean checkPath(short userId, String device, String path) {		
 		return !accessPathRepository.findByUserIdAndDeviceAndLikePathOrLikePathParam(userId, device, path).isEmpty();
 	}
@@ -43,9 +43,17 @@ public class AccessPathServiceImpl implements AccessPathService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public List<AccessPath> findByUserId(short userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return accessPathRepository.findByUserId(userId);
+	}
+
+	@Override
+	@Transactional
+	public AccessPath changePermission(short accessPathId, short permission) {
+		AccessPath accessPath=accessPathRepository.findOne(accessPathId);
+		accessPath.setPermissions(permission);
+		return accessPathRepository.save(accessPath);
 	}
 
 }

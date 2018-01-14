@@ -60,7 +60,7 @@ public interface AccessPathRepository extends JpaRepository<AccessPath, Short>{
 	 * @param path - path
 	 * @return list with AccessPath
 	 */
-	@Query("from AccessPath a where a.user.id=:id and (a.device like :device or a.device='*') and (:path like concat(a.path,'%') or a.path like concat(:path,'%')")
+	@Query("from AccessPath a where a.user.id=:id and (a.device like :device or a.device='*') and (:path like concat(a.path,'%') or a.path like concat(:path,'%'))")
 	public List<AccessPath> findByUserIdAndDeviceAndLikePathOrLikePathParam(@Param("id") short userId, @Param("device") String device, @Param("path")String path);
 
 	/**

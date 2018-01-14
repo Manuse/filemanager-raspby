@@ -42,4 +42,12 @@ public interface AccessPathService {
 	 * @return list with AccessPath 
 	 */
 	public List<AccessPath> findByUserId(short userId);
+	
+	/**
+	 * change permission of one Access Path
+	 * @param accessPathId access path id
+	 * @param permission new permission
+	 * @return AccessPath modified
+	 */
+	public AccessPath changePermission(short accessPathId, short permission);
 }

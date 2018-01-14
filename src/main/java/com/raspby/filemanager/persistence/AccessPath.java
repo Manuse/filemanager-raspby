@@ -30,6 +30,12 @@ public class AccessPath extends IdEntity{
 	@Column(name="permissions")
 	private short permissions;
 	
+	@Column(name="space_used")
+	private double spaceUsed;
+	
+	@Column(name="space_limit")
+	private double spaceLimit;
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private Users user;
@@ -88,6 +94,34 @@ public class AccessPath extends IdEntity{
 	 */
 	public void setUser(Users user) {
 		this.user = user;
+	}
+
+	/**
+	 * @return the spaceUsed
+	 */
+	public double getSpaceUsed() {
+		return spaceUsed;
+	}
+
+	/**
+	 * @param spaceUsed the spaceUsed to set
+	 */
+	public void setSpaceUsed(double spaceUsed) {
+		this.spaceUsed = spaceUsed;
+	}
+
+	/**
+	 * @return the spaceLimit
+	 */
+	public double getSpaceLimit() {
+		return spaceLimit;
+	}
+
+	/**
+	 * @param spaceLimit the spaceLimit to set
+	 */
+	public void setSpaceLimit(double spaceLimit) {
+		this.spaceLimit = spaceLimit;
 	}
 
 	

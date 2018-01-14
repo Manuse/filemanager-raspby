@@ -40,4 +40,6 @@ public interface FileService {
 	
 	public boolean deleteFile(short userId, String device, String path) throws FileNotFoundException;
 	
+	public List<String> getCurrentDevices();
+	
 }

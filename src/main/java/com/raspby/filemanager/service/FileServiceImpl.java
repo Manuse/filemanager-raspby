@@ -1,11 +1,9 @@
 package com.raspby.filemanager.service;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,10 +11,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.raspby.filemanager.exceptions.UnauthorizedException;
@@ -90,9 +86,8 @@ public class FileServiceImpl implements FileService {
 	public List<CustomFile> getRoots(short userId) {
 		List<String> userDevice = accessPathRepository.findDistinctDeviceByUserId(userId);// .stream()
 		// .map(AccessPath::getDevice).collect(Collectors.toList());//
-		List<CustomFile> cf = new ArrayList<CustomFile>();
-		File file = new File(DEFAULT_PATH_WITH_BAR);
-		List<String> devices = Arrays.asList(file.list());
+		List<CustomFile> cf = new ArrayList<CustomFile>();	
+		List<String> devices = getCurrentDevices();
 		if (userDevice.contains(ALL_DEVICES)) {
 			for (String st : devices) {
 				cf.add(makeCustomFile(new File(DEFAULT_PATH_WITH_BAR + st), null));
@@ -246,6 +241,13 @@ public class FileServiceImpl implements FileService {
 			deleteDir(f);
 		}
 		return file.delete();
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<String> getCurrentDevices() {
+		File file = new File(DEFAULT_PATH_WITH_BAR);
+		return Arrays.asList(file.list());
 	}
 
 }

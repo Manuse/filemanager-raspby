@@ -22,4 +22,6 @@ public interface UsersService {
 	public List<Users> findAll();
 	
 	public Users updatePass(short id, String oldPass, String newPass);
+	
+	public Users changeEnable(short id);
 }

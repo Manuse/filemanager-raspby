@@ -35,17 +35,12 @@ public class Users extends IdEntity{
 	
 	@Column(name="password")
 	@NotBlank
+	@JsonIgnore
 	private String password;
 	
 	@Column(name="enabled")
 	@NotNull
 	private boolean enabled;
-	
-	@Column(name="space_used")
-	private double spaceUsed;
-	
-	@Column(name="space_limit")
-	private double spaceLimit;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_authority", joinColumns = { @JoinColumn(name = "id_user", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "id_authority", table = "authority", referencedColumnName = "id") })
@@ -111,33 +106,6 @@ public class Users extends IdEntity{
 		this.authorities = authorities;
 	}
 
-	/**
-	 * @return the spaceUsed
-	 */
-	public double getSpaceUsed() {
-		return spaceUsed;
-	}
-
-	/**
-	 * @param spaceUsed the spaceUsed to set
-	 */
-	public void setSpaceUsed(double spaceUsed) {
-		this.spaceUsed = spaceUsed;
-	}
-
-	/**
-	 * @return the spaceLimit
-	 */
-	public double getSpaceLimit() {
-		return spaceLimit;
-	}
-
-	/**
-	 * @param spaceLimit the spaceLimit to set
-	 */
-	public void setSpaceLimit(double spaceLimit) {
-		this.spaceLimit = spaceLimit;
-	}
 
 	/**
 	 * @return the accessPath

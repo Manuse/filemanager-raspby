@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.MultipartConfig;
@@ -31,7 +33,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.raspby.filemanager.model.CustomFile;
+import com.raspby.filemanager.persistence.Authority;
+import com.raspby.filemanager.persistence.Users;
+import com.raspby.filemanager.security.SecurityUtils;
 import com.raspby.filemanager.service.FileService;
+import com.raspby.filemanager.service.UsersService;
 
 /**
  * 
@@ -41,12 +47,11 @@ import com.raspby.filemanager.service.FileService;
 @RestController
 public class FileController {
 
-	long size = 0l;
-
-	// private Map inputs = new
-
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private UsersService usersService;
 
 	@GetMapping("/file/roots")
 	public List<CustomFile> getRoots(@RequestParam("userId") short userId) {
@@ -90,7 +95,7 @@ public class FileController {
 				.contentType(MediaType.parseMediaType(mimeType)).body(new InputStreamResource(fis));
 	}
 
-	@RequestMapping(value = "/upload", method = RequestMethod.POST, headers = "Content-type=multipart/form-data")
+	@RequestMapping(value = "/file/upload", method = RequestMethod.POST, headers = "Content-type=multipart/form-data")
 	public CustomFile uploadFile(@RequestParam(value = "file") MultipartFile file, @RequestParam("path") String path,
 			@RequestParam("fileSize") long fileSize, @RequestParam("userId") short userId,
 			@RequestParam("device") String device) throws IOException {
@@ -99,7 +104,6 @@ public class FileController {
 		System.err.println(fileSize);
 		// System.err.println(file.getOriginalFilename());
 		// System.err.println(file.getSize());
-		System.err.println(size);
 		System.err.println(path + "/" + file.getOriginalFilename() + ".upload");
 		return fileService.uploadFile(userId, device, path, fileSize, file);
 	}
@@ -118,7 +122,7 @@ public class FileController {
 		return fileService.mkDir(userId, device, path, newDir);
 	}
 
-	@GetMapping("/upload/size")
+	@GetMapping("/file/upload/size")
 	public @ResponseBody Long uploadFileSize(@RequestParam("path") String path) {
 		File file = new File(path);
 		if (file.exists()) {
@@ -126,12 +130,28 @@ public class FileController {
 		}
 		return new File(path + ".upload").length();
 	}
+	
+	@GetMapping("/admin/file/current-devices")
+	public List<String>  getCurrentDevices(){
+		Users user = usersService.findByUsername(SecurityUtils.getCurrentLogin());
+		if(user.getAuthorities().contains(new Authority("super-admin"))) {
+		return fileService.getCurrentDevices();
+		}
+		return fileService.getRoots(user.getId()).stream().map(CustomFile::getDevice).collect(Collectors.toList());
+	}
+	
+	
+	
 
 	static class FileResponse {
 
 		List<CustomFile> files;
 
 		Short permission;
+		
+		Double limitSpace;
+		
+		Double useSpace;
 
 		/**
 		 * @return the customFiles
@@ -162,6 +182,36 @@ public class FileController {
 		public void setPermission(Short permission) {
 			this.permission = permission;
 		}
+
+		/**
+		 * @return the limitSpace
+		 */
+		public Double getLimitSpace() {
+			return limitSpace;
+		}
+
+		/**
+		 * @param limitSpace the limitSpace to set
+		 */
+		public void setLimitSpace(Double limitSpace) {
+			this.limitSpace = limitSpace;
+		}
+
+		/**
+		 * @return the usageSpace
+		 */
+		public Double getUseSpace() {
+			return useSpace;
+		}
+
+		/**
+		 * @param usageSpace the usageSpace to set
+		 */
+		public void setUseSpace(Double usageSpace) {
+			this.useSpace = useSpace;
+		}
+		
+		
 
 	}
 }

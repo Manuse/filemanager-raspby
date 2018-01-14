@@ -60,8 +60,7 @@
                         device: file.device,
                     }
                     //true si se encuentra dentro de la raiz de un dispositivo
-                    vm.parent.rootFile = file.rootFile == null ? true : file[0] == null ? false : file[0].rootFile;
-
+                    vm.parent.rootFile = file.rootFile == null ? true : vm.files[0] == null ? false : vm.files[0].rootFile;
 
                     //ruta de los archivos mostrado arriba
                     var currentPath = file.path;
@@ -159,9 +158,9 @@
             vm.file = file;
             vm.errFiles = errFiles;
             file.upload = Upload.upload({
-                url: '/upload',
+                url: '/file/upload',
                 resumeChunkSize: '1MB',
-                resumeSizeUrl: '/upload/size?path=' + vm.parent.device + vm.currentPath + '/' + file.name,
+                resumeSizeUrl: '/file/upload/size?path=' + vm.parent.device + vm.currentPath + '/' + file.name,
                 data: {
                     file: file,
                     path: (hiddenPath + vm.currentPath).length == 0 ? "/" : hiddenPath + vm.currentPath,

@@ -1,0 +1,49 @@
+<div>
+    <!-- gestion de usuarios -->
+    <div>
+        <!-- añadir usuarios -->
+        <div>
+            <form ng-submit="">
+                <input type="text" placeholder="Nombre de usuario" ng-model="vm.newUsername" required>
+                <input type="password" placeholder="Contraseña" ng-model="vm.newPassword" required>
+                <input type="password" placeholder="Contraseña" ng-model="vm.newPassword2" required>
+
+
+                <select ng-model="vm.newRole" ng-options="item.id as item.name for item in vm.roles"></select>
+                <input type="submit" value="Crear usuario">
+            </form>
+        </div>
+        <div>
+            <ul ng-repeat="user in vm.users | usersFilter">
+                <li>
+                    <span ng-bind="user.username"></span>
+                    <button class="btn btn-sm btn-danger" ng-click="">X</button>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- edicion de access paths -->
+    <div ng-if="vm.currentUser!=null && true">
+        <div>
+
+        </div>
+        <div>
+            <form ng-submit="">
+                <select ng-model="vm.device" ng-options="item as item for item in vm.devices"></select>
+                <input type="text" placeholder="Nueva ruta" ng-model="vm.newPath">
+                <select ng-model="vm.permission">
+                    <option value="0">Escritura</option>
+                    <option value="1">Lectura</option>
+                </select>
+                <label>Espacio limite de subida(0 sin limite)
+                    <input type="number" ng-model="vm.spaceLimit" min="0">
+                </label>
+               
+                <button type="submit">Añadir ruta de acceso</button>
+                <button type="reset">reset</button>
+            </form>
+        </div>
+    </div>
+
+</div>

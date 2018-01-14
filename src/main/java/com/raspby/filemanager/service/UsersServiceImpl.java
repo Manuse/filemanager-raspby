@@ -70,4 +70,13 @@ public class UsersServiceImpl implements UsersService{
 		return null;
 	}
 
+	@Override
+	@Transactional
+	public Users changeEnable(short id) {
+		Users user = usersRepository.findOne(id);
+		user.setEnabled(!user.isEnabled());
+		return user;
+	}
+
+	
 }

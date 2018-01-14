@@ -41,6 +41,14 @@
                 loginRequired: false,
                 authorizedRoles: [USER_ROLES.all]
             }
+        }).when('/admin', {
+            templateUrl: 'template/administration.html',
+            controller: "AdministrationController",
+            controllerAs: "vm",
+            access: {
+                loginRequired: true,
+                authorizedRoles: [USER_ROLES.admin]
+            }
         }).otherwise({
             redirectTo: '/error/404',
             access: {
