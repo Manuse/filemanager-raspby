@@ -5,10 +5,10 @@
         .module('myapp')
         .filter('usersFilter', usersFilter);
 
-    usersFilter.$inject('Session')
+    usersFilter.$inject = ['Session']
     function usersFilter(Session) {
         return function(array){
-            return array.map(function(item){
+            return array.filter(function(item){
                 if(Session.id!=item.id){
                     if(Session.userRoles.indexOf("super-admin")!=-1){
                         return item;
