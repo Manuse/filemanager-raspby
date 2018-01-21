@@ -30,7 +30,7 @@ public class AccessPathServiceImpl implements AccessPathService{
 	@Transactional
 	public AccessPath addAccessPath(AccessPath accessPath) {
 		if(checkPath(accessPath.getUser().getId(), accessPath.getDevice(), accessPath.getPath())) {
-			accessPathRepository.delete(accessPathRepository.findByUserIdAndDeviceAndLikePathOrLikePathParam(accessPath.getUser().getId(), accessPath.getDevice(), accessPath.getPath()));
+			accessPathRepository.deleteAll(accessPathRepository.findByUserIdAndDeviceAndLikePathOrLikePathParam(accessPath.getUser().getId(), accessPath.getDevice(), accessPath.getPath()));
 		}
 		return accessPathRepository.save(accessPath);
 	}
@@ -38,8 +38,8 @@ public class AccessPathServiceImpl implements AccessPathService{
 	@Override
 	@Transactional
 	public boolean deleteAccessPath(short accessPathId) {
-		accessPathRepository.delete(accessPathId);
-		return !accessPathRepository.exists(accessPathId);
+		accessPathRepository.deleteById(accessPathId);
+		return !accessPathRepository.existsById(accessPathId);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class AccessPathServiceImpl implements AccessPathService{
 	@Override
 	@Transactional
 	public AccessPath changePermission(short accessPathId, short permission) {
-		AccessPath accessPath=accessPathRepository.findOne(accessPathId);
+		AccessPath accessPath=accessPathRepository.findById(accessPathId).get();
 		accessPath.setPermissions(permission);
 		return accessPathRepository.save(accessPath);
 	}

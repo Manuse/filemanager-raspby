@@ -536,7 +536,7 @@ public class CustomRememberMeServices implements RememberMeServices, Initializin
 			try {
 				String[] cookieTokens = decodeCookie(rememberMeCookie);
 				Token token = getPersistentToken(cookieTokens);
-				tokenRepository.delete(token.getSeries());
+				tokenRepository.deleteById(token.getSeries());
 			} catch (InvalidCookieException ice) {
 				// log.info("Invalid cookie, no persistent token could be deleted");
 				System.err.println("Invalid cookie, no persistent token could be deleted");
@@ -566,7 +566,7 @@ public class CustomRememberMeServices implements RememberMeServices, Initializin
 
 		Token token = null;
 		try {
-			token = tokenRepository.findOne(presentedSeries);
+			token = tokenRepository.findById(presentedSeries).get();
 		} catch (DataAccessException e) {
 			// log.error("Error to access database", e );
 			System.err.println("Error to access database");
@@ -582,13 +582,13 @@ public class CustomRememberMeServices implements RememberMeServices, Initializin
 		// token.getValue());
 		if (!presentedToken.equals(token.getValue())) {
 			// Token doesn't match series value. Delete this session and throw an exception.
-			tokenRepository.delete(token.getSeries());
+			tokenRepository.deleteById(token.getSeries());
 			throw new CookieTheftException(
 					"Invalid remember-me token (Series/token) mismatch. Implies previous cookie theft attack.");
 		}
 
 		if (DateUtils.addDays(token.getDate(), TOKEN_VALIDITY_DAYS).before(new Date())) {
-			tokenRepository.delete(token.getSeries());
+			tokenRepository.deleteById(token.getSeries());
 			throw new RememberMeAuthenticationException("Remember-me login has expired");
 		}
 		return token;

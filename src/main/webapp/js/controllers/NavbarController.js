@@ -8,8 +8,9 @@
             var vm = this;
     
             vm.logout = AuthSharedFactory.logout;
-            vm.role = Session.userRoles;
+            vm.role = Session.getUserRoles;
             vm.username = Session.username;
-    
+
+            
         }
 })();

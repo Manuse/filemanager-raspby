@@ -21,7 +21,7 @@
         vm.order = "name";
         vm.filterText = "";
         vm.filter = "both";
-
+        
 
         if (Session.id === null || Session.id === undefined) {
             AuthSharedFactory.getAccount();

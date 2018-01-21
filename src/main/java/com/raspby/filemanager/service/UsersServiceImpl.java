@@ -36,13 +36,15 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	@Transactional
 	public boolean deleteUsers(short id) {
-		usersRepository.delete(id);
-		return !usersRepository.exists(id);
+		usersRepository.deleteById(id);
+		return !usersRepository.existsById(id);
 	}
 
 	@Override
 	@Transactional
 	public Users saveUser(Users users) {
+		System.err.println(passwordEncoder);
+		System.err.println(users);
 		users.setPassword(passwordEncoder.encode(users.getPassword()));
 		return usersRepository.save(users);
 	}
@@ -50,7 +52,7 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	@Transactional(readOnly=true)
 	public Users findOne(short id) {
-		return usersRepository.findOne(id);
+		return usersRepository.findById(id).get();
 	}
 
 	@Override
@@ -73,7 +75,7 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	@Transactional
 	public Users changeEnable(short id) {
-		Users user = usersRepository.findOne(id);
+		Users user = usersRepository.findById(id).get();
 		user.setEnabled(!user.isEnabled());
 		return user;
 	}

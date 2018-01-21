@@ -23,6 +23,9 @@
             this.login = false;
         };
 
+        this.getUserRoles=function(){
+            return this.userRoles;
+        }
         return this;
     }
 

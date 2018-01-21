@@ -1,6 +1,6 @@
 <div class="navbar navbar-default" ng-controller="NavbarController as vm">
     <div class="navbar-header">
-        <a class="navbar-brand" href="javascript:void(0)">Brand</a>
+        <a class="navbar-brand" href="javascript:void(0)">File Manager</a>
     </div>
     <div class="">
         <ul class="nav navbar-nav">
@@ -11,15 +11,14 @@
                 <a>
                     <i class="glyphicon glyphicon-off"></i> Sign out</a>
             </li>
-            <li ng-if="vm.role.indexOf('admin')!==-1">
+            <li ng-if="vm.role().indexOf('admin')!==-1">
                 <a href="#!admin">Administracion</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
                 <a href="javascript:void(0)">
-                    {{vm.username}}
-                    <b class="caret"></b>
+                    {{vm.username}}              
                 </a>
             </li>
         </ul>

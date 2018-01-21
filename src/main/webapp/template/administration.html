@@ -3,13 +3,11 @@
     <div>
         <!-- añadir usuarios -->
         <div>
-            <form ng-submit="">
+            <form ng-submit="vm.createUser()">
                 <input type="text" placeholder="Nombre de usuario" ng-model="vm.newUsername" required>
                 <input type="password" placeholder="Contraseña" ng-model="vm.newPassword" required>
-                <input type="password" placeholder="Contraseña" ng-model="vm.newPassword2" required>
-
-
-                <select ng-model="vm.newRole" ng-options="item.id as item.name for item in vm.roles"></select>
+                <input type="password" placeholder="Repetir contraseña" ng-model="vm.newPassword2" required>
+                <select ng-model="vm.newRole" ng-if="vm.roles.length>1" ng-options="item.id as item.name for item in vm.roles"></select>
                 <input type="submit" value="Crear usuario">
             </form>
         </div>
@@ -24,7 +22,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="user in vm.users | usersFilter">
-                        <td ng-bind="user.username"></td>
+                        <td><a ng-bind="user.username" ng-click="vm.setSelectUser(user)"></a></td>
                         <td>
                             <span ng-repeat="role in user.authorities" ng-bind="role.name+' '"></span>
                         </td>
@@ -38,17 +36,11 @@
                     </tr>
                 </tbody>
             </table>
-            <!-- <ul ng-repeat="user in vm.users | usersFilter">
-                <li>
-                    <span ng-bind="user.username"></span>
-                    <button class="btn btn-sm btn-danger" ng-click="">X</button>
-                </li>
-            </ul> -->
         </div>
 
     </div>
     <!-- edicion de access paths -->
-    <div ng-if="vm.currentUser!=null">
+    <div ng-if="vm.selectUser!=null">
         <div>
             <table>
                 <thead>
@@ -73,7 +65,7 @@
         <div>
             <form ng-submit="">
                 <select ng-model="vm.device" ng-options="item as item for item in vm.devices"></select>
-                <input type="text" placeholder="Nueva ruta" ng-model="vm.newPath">
+                <input type="text" placeholder="Nueva ruta" ng-model="vm.newPath" ng-disabled="vm.isAdmin">
                 <select ng-model="vm.permission">
                     <option value="0">Escritura</option>
                     <option value="1">Lectura</option>
