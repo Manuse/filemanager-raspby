@@ -23,7 +23,7 @@
                 })
             },
             changeEnabled: function (id) {
-                return $http.put("/admin/change-enabled", {
+                return $http.put("/admin/change-enabled", {}, {
                     params: {
                         id: id
                     }
@@ -43,10 +43,19 @@
                 return $http.post("/admin/access-path", accessPath)
             },
             deleteAccessPath: function (accessPathId) {
-                return $http.delete("/admin/access-path")
+                return $http.delete("/admin/access-path", {
+                    params: {
+                        accessPathId: accessPathId
+                    }
+                })
             },
             changePermission: function (accessPathId, permission) {
-                return $http.put("/admin/change-permission")
+                return $http.put("/admin/change-permission", {}, {
+                    params: {
+                        accessPathId: accessPathId,
+                        permission: permission
+                    }
+                })
             },
             checkPath: function (userId, device, path) {
                 return $http.get("/admin/check-path", {

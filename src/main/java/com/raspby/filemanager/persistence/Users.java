@@ -15,8 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,7 +34,7 @@ public class Users extends IdEntity{
 	
 	@Column(name="password")
 	@NotBlank
-	@JsonIgnore
+	//@JsonIgnore
 	private String password;
 	
 	@Column(name="enabled")
@@ -120,6 +119,14 @@ public class Users extends IdEntity{
 	public void setAccessPath(List<AccessPath> accessPath) {
 		this.accessPath = accessPath;
 	}
+
+	@Override
+	public String toString() {
+		return password+" "+username;
+	}
+	
+	
+	
 	
 	
 	

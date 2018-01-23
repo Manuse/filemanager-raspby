@@ -5,9 +5,9 @@
         .module('myapp')
         .controller('AdministrationController', administrationController);
 
-    administrationController.$inject = ['AdministrationFactory', 'Session'];
+    administrationController.$inject = ['AdministrationFactory', 'Session', '$uibModal'];
 
-    function administrationController(AdministrationFactory, Session) {
+    function administrationController(AdministrationFactory, Session, $uibModal) {
         var vm = this;
         vm.users = [];
         vm.devices = [];
@@ -32,14 +32,58 @@
             console.error(error);
         })
 
+        vm.changeEnabled=function(user){
+            AdministrationFactory.changeEnabled(user.id).then(function(response){
+                user.enabled=response.data.enabled;
+            },function(error){
+                console.error(error);           
+            })
+        }
+
+        //uso de check path y de modal en caso contrario y comprobar si ya existe
+        vm.createAccessPath=function(){
+            if(!vm.newPath.startsWith("/")){
+                vm.newPath = "/"+vm.newPath;
+            }
+            AdministrationFactory.checkPath(vm.selectUser.id, vm.device, vm.newPath).then(function(response){
+                console.log(response.data);
+                
+            }, function(error){
+                console.error(error);            
+            })
+            
+        }
+
+        vm.changePermission = function (accessPath){
+            AdministrationFactory.changePermission(accessPath.id, accessPath.permissions==1 ? 0:1).then(function(response){
+                accessPath.permissions = response.data.permissions;
+            }, function(error){
+                console.error(error);              
+            })
+        }
+
+        vm.deleteAccessPath=function(index, accessPath){
+            AdministrationFactory.deleteAccessPath(accessPath.id).then(function(response){
+                if(response){
+                    vm.accessPaths.splice(index,1);
+                }else{
+                    console.log("no se ha borrado");                  
+                }
+            }, function(error){
+                console.error(error);              
+            })
+        }
+
         vm.createUser = function () {
             if (vm.newPassword === vm.newPassword2) {
                 var auth = [{
-                    id: 1
+                    id: 1,
+                    name:"user"
                 }];
                 if (vm.newRole == 2) {
                     auth.push({
-                        id: 2
+                        id: 2,
+                        name:"admin"
                     });
                 }
                 var user = {
@@ -55,9 +99,23 @@
 
                 })
             }else{
-                console.log("mal pass");
-                
+                console.log("mal pass");            
             }
+        }
+
+        vm.deleteUser=function(index, user){
+            
+            AdministrationFactory.deleteUser(user.id).then(function(response){
+                if(response.data){
+                    vm.users.splice(index,1);
+                }else{
+                    console.log("falla borrar");
+                    
+                }
+            }, function(error){
+                console.error(error);
+                
+            })
         }
 
         vm.setSelectUser = function (user) {

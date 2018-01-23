@@ -22,11 +22,8 @@ import com.raspby.filemanager.service.AccessPathService;
 @RestController
 public class AccessPathController {
 
-	
 	private final AccessPathService accessPathService;
-	
-	
-	
+
 	/**
 	 * @param accessPathService
 	 */
@@ -35,29 +32,30 @@ public class AccessPathController {
 		this.accessPathService = accessPathService;
 	}
 
-
 	@PostMapping("/admin/access-path")
 	public AccessPath addAccessPath(@RequestBody AccessPath accessPath) {
 		return accessPathService.addAccessPath(accessPath);
 	}
-	
+
 	@DeleteMapping("/admin/access-path")
 	public boolean deleteAccessPath(@RequestParam("accessPathId") short accessPathId) {
 		return accessPathService.deleteAccessPath(accessPathId);
 	}
-	
+
 	@GetMapping("/admin/check-path")
-	public boolean checkPath(@RequestParam("userId")short userId, @RequestParam("device")String device, @RequestParam("path")String path) {
+	public boolean checkPath(@RequestParam("userId") short userId, @RequestParam("device") String device,
+			@RequestParam("path") String path) {
 		return accessPathService.checkPath(userId, device, path);
 	}
-	
+
 	@GetMapping("/admin/user-access-path")
-	public List<AccessPath> findByUserId(@RequestParam("userId")short userId){
+	public List<AccessPath> findByUserId(@RequestParam("userId") short userId) {
 		return accessPathService.findByUserId(userId);
 	}
-	
+
 	@PutMapping("/admin/change-permission")
-	public AccessPath changePermission(@RequestParam("accessPathId") short accessPathId, @RequestParam("permission") short permission) {
+	public AccessPath changePermission(@RequestParam("accessPathId") short accessPathId,
+			@RequestParam("permission") short permission) {
 		return accessPathService.changePermission(accessPathId, permission);
 	}
 }

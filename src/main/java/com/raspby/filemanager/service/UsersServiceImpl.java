@@ -43,8 +43,6 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	@Transactional
 	public Users saveUser(Users users) {
-		System.err.println(passwordEncoder);
-		System.err.println(users);
 		users.setPassword(passwordEncoder.encode(users.getPassword()));
 		return usersRepository.save(users);
 	}
@@ -76,8 +74,9 @@ public class UsersServiceImpl implements UsersService{
 	@Transactional
 	public Users changeEnable(short id) {
 		Users user = usersRepository.findById(id).get();
+		System.err.println(!user.isEnabled());
 		user.setEnabled(!user.isEnabled());
-		return user;
+		return usersRepository.save(user);
 	}
 
 	
