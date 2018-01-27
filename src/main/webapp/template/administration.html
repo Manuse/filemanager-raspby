@@ -64,6 +64,7 @@
             </table>
         </div>
         <div>
+            <!-- formulario añadir ruta -->
             <form ng-submit="vm.createAccessPath()">
                 <select ng-model="vm.device" ng-options="item as item for item in vm.devices"></select>
                 <input type="text" placeholder="Nueva ruta" ng-model="vm.newPath" ng-disabled="vm.isAdmin">

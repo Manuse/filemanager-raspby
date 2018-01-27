@@ -65,6 +65,14 @@
                         path: path
                     }
                 })
+            },
+            changePasswordUser: function (userId, newPass) {
+                return $http.put("/admin/user/update-pass", {}, {
+                    params: {
+                        id: userId,
+                        newPass: newPass
+                    }
+                })
             }
         };
 

@@ -46,8 +46,13 @@ public class UsersController {
 	}
 	
 	@PutMapping("/user/update-pass")
-	public Users updatePass(@RequestParam("id")short id, @RequestParam("oldPass")String oldPass, @RequestParam("newPass")String newPass) {
-		return usersService.updatePass(id, oldPass, newPass);
+	public Users updatePass(@RequestParam("newPass")String newPass) {
+		return usersService.updatePass(newPass);
+	}
+	
+	@PutMapping("/admin/user/update-pass")
+	public Users updatePass(@RequestParam("id")short id, @RequestParam("newPass")String newPass) {
+		return usersService.updatePass(id, newPass);
 	}
 	
 	@PutMapping("/admin/change-enabled")

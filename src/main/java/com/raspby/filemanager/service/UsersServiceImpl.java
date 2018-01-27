@@ -10,8 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.raspby.filemanager.exceptions.GeneralException;
 import com.raspby.filemanager.persistence.Users;
 import com.raspby.filemanager.repository.UsersRepository;
+import com.raspby.filemanager.security.SecurityUtils;
 
 /**
  * @author Manuel
@@ -43,6 +45,9 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	@Transactional
 	public Users saveUser(Users users) {
+		if(usersRepository.findByUsername(users.getUsername())!=null) {
+			throw new GeneralException("Usuario existente");
+		}
 		users.setPassword(passwordEncoder.encode(users.getPassword()));
 		return usersRepository.save(users);
 	}
@@ -61,20 +66,31 @@ public class UsersServiceImpl implements UsersService{
 
 	@Override
 	@Transactional
-	public Users updatePass(short id, String oldPass, String newPass) {
-		Users user = usersRepository.findByIdAndPassword(id, passwordEncoder.encode(oldPass));
+	public Users updatePass(String newPass) {
+		Users user = usersRepository.findByUsername(SecurityUtils.getCurrentLogin());
+		return updatePass(user, newPass);
+	}
+	
+	@Override
+	@Transactional
+	public Users updatePass(short id, String newPass) {
+		Users user = usersRepository.findById(id).get();
+		System.err.println(user);
+		return updatePass(user, newPass);
+	}
+
+	private Users updatePass(Users user, String newPass) {
 		if(user!=null) {
 			user.setPassword(passwordEncoder.encode(newPass));
 			return usersRepository.save(user);
 		}
 		return null;
 	}
-
+	
 	@Override
 	@Transactional
 	public Users changeEnable(short id) {
 		Users user = usersRepository.findById(id).get();
-		System.err.println(!user.isEnabled());
 		user.setEnabled(!user.isEnabled());
 		return usersRepository.save(user);
 	}

@@ -1,18 +1,21 @@
 <div class="navbar navbar-default" ng-controller="NavbarController as vm">
     <div class="navbar-header">
-        <a class="navbar-brand" href="javascript:void(0)">File Manager</a>
+        <a class="navbar-brand" href="#!home">File Manager</a>
     </div>
     <div class="">
         <ul class="nav navbar-nav">
             <li>
-                <a href="#!home" class="mdi-action-home"></a>
+                <a href="#!home" class="mdi-action-home"> <i class="glyphicon glyphicon-home"></i></a>
             </li>
             <li ng-click="vm.logout()">
                 <a>
-                    <i class="glyphicon glyphicon-off"></i> Sign out</a>
+                    <i class="glyphicon glyphicon-off"></i>Sign out</a>
             </li>
             <li ng-if="vm.role().indexOf('admin')!==-1">
                 <a href="#!admin">Administracion</a>
+            </li>
+            <li>
+                <a ng-click="vm.changePass()">Cambiar contraseña</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
