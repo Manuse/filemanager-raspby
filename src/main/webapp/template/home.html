@@ -1,12 +1,52 @@
 <div class="container">
     <div class="row">
+        <div class="col-md-offset-1 col-md-3">
+            <!-- div para con opciones para ordenar -->
+            <div ng-if="vm.parent.device!=null">
+                <p>Ordenar por...</p>
+                <label>
+                    <input type="radio" ng-model="vm.order" value="name"> Nombre
+                </label>
+                <br/>
+                <label>
+                    <input type="radio" ng-model="vm.order" value="-size"> Tamaño
+                </label>
+                <br/>
+                <label>
+                    <input type="radio" ng-model="vm.order" value="lastModified"> Ultima Modificacion
+                </label>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <!-- div para el filtrado -->
+            <div ng-if="vm.parent.device!=null">
+                <input type="text" ng-model="vm.filterText" placeholder="Buscar...">
+                <p>Filtrar por...</p>
+                <label>
+                    <input type="radio" ng-model="vm.filter" value="both"> Ambos
+                </label>
+                <br/>
+                <label>
+                    <input type="radio" ng-model="vm.filter" value="directory"> Directorios
+                </label>
+                <br/>
+                <label>
+                    <input type="radio" ng-model="vm.filter" value="file"> Archivos
+                </label>
+            </div>
+        </div>
+
         <!-- botones creacion de carpetas y subida de archivos -->
-        <div ng-if="vm.permission===0" class="col-md-offset-6 col-md-5 col-md-offset-1">
-            <input type="text" placeholder="Nuevo directorio" ng-model="vm.newDir">
-            <button type="button" class="btn btn-sm btn-primary" ng-click="vm.mkDir()">Crear Carpeta</button>
-            <button class="btn btn-sm btn-primary" ngf-select="vm.uploadFiles($file, $invalidFiles)" ng-disabled="vm.disabledUpload">
+        <div ng-if="vm.permission===0" class="col-md-5">
+                <form class="form-inline">
+            <div class="pull-right">
+            <input type="text" placeholder="Nuevo directorio" ng-model="vm.newDir" class="form-control">
+            <button type="button" class="btn btn-sm btn-primary form-control" ng-click="vm.mkDir()">Crear Carpeta</button>
+            <button class="btn btn-sm btn-primary form-control" ngf-select="vm.uploadFiles($file, $invalidFiles)" ng-disabled="vm.disabledUpload">
                 <i class="glyphicon glyphicon-cloud-upload"></i>Subir archivo</button>
         </div>
+        </form>
+    </div>
     </div>
     <div class="row">
         <div class="col-md-offset-1 col-md-11 col-md-offset-1">
@@ -51,51 +91,13 @@
             </table>
         </div>
     </div>
+    <!-- progress bar -->
+    <div>
+        <uib-progressbar class="progress-striped active" value="vm.porcent" type="{{vm.vm.typeProgressBar}}" ng-if="vm.porcent!=0">{{vm.porcent}}%</uib-progressbar>
+    </div>
 
-    <div class="row">
-        <div class="col-md-offset-1 col-md-5">
-            <!-- div para con opciones para ordenar -->
-            <div ng-if="vm.parent.device!=null">
-                <p>Ordenar por...</p>
-                <label>
-                    <input type="radio" ng-model="vm.order" value="name"> Nombre
-                </label>
-                <br/>
-                <label>
-                    <input type="radio" ng-model="vm.order" value="-size"> Tamaño
-                </label>
-                <br/>
-                <label>
-                    <input type="radio" ng-model="vm.order" value="lastModified"> Ultima Modificacion
-                </label>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <!-- div para el filtrado -->
-            <div ng-if="vm.parent.device!=null">
-                <input type="text" ng-model="vm.filterText" placeholder="Buscar...">
-                <p>Filtrar por...</p>
-                <label>
-                    <input type="radio" ng-model="vm.filter" value="both"> Ambos
-                </label>
-                <br/>
-                <label>
-                    <input type="radio" ng-model="vm.filter" value="directory"> Directorios
-                </label>
-                <br/>
-                <label>
-                    <input type="radio" ng-model="vm.filter" value="file"> Archivos
-                </label>
-            </div>
-        </div>
-            <!-- progress bar -->
-            <div>
-                <uib-progressbar class="progress-striped active" value="vm.porcent" type="{{vm.vm.typeProgressBar}}" ng-if="vm.porcent!=0">{{vm.porcent}}%</uib-progressbar>
-            </div>
-
-            <!-- div de alert de ui-boostrap -->
-            <div uib-alert ng-repeat="alert in vm.alerts" ng-class="[bold, 'alert-'+alert.type]" close="vm.closeAlert($index)" dismiss-on-timeout="3000">
-                <b>{{alert.text}}</b>
-            </div>
-        </div>
+    <!-- div de alert de ui-boostrap -->
+    <div uib-alert ng-repeat="alert in vm.alerts" ng-class="[bold, 'alert-'+alert.type]" close="vm.closeAlert($index)" dismiss-on-timeout="3000">
+        <b>{{alert.text}}</b>
+    </div>
 </div>
