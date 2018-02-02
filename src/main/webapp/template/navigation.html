@@ -5,24 +5,28 @@
     <div class="container">
         <ul class="nav navbar-nav">
             <li>
-                <a href="#!home" class="mdi-action-home"> <i class="glyphicon glyphicon-home"></i></a>
+                <a href="#!home" class="mdi-action-home">
+                    <i class="glyphicon glyphicon-home"></i>
+                </a>
             </li>
             <li ng-click="vm.logout()">
                 <a>
                     <i class="glyphicon glyphicon-off"></i>Sign out</a>
             </li>
             <li ng-if="vm.role().indexOf('admin')!==-1">
-                <a href="#!admin">Administracion</a>
+                <a href="#!admin">Administración</a>
             </li>
             <li>
-                <a ng-click="vm.changePass()">Cambiar contraseña</a>
+                <a ng-click="vm.changePass()">Cambiar Contraseña</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
+
                 <a href="javascript:void(0)">
-                    {{vm.username}}              
+                    <b>{{vm.username}} </b>
                 </a>
+
             </li>
         </ul>
     </div>

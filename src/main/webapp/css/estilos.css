@@ -4,6 +4,11 @@ body {
   color: black;
 }
 
+.bajar{
+  padding: 20px;
+  margin-top: 15%;
+}
+
 table {
   background: #ffffff;
   color: black;
@@ -34,6 +39,5 @@ td i.glyphicon-level-up:hover {
 }
 
 .alerta{
-  margin-top: 5px;
-  padding: 10px;
+  margin-top: 30px;
 }
