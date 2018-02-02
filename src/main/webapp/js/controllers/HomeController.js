@@ -134,7 +134,7 @@
 
         vm.mkDir = function () {
             if (vm.newDir.length === 0) {
-                addAlert("El campo nombre esta vacio", "warning")
+                addAlert("El campo nombre está vacío", "warning")
             } else if (vm.files.map(function (dir) {
                     if (dir.directory) {
                         return dir.name;

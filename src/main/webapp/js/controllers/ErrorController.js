@@ -12,7 +12,7 @@
                 vm.message = "Acceso no autorizado"
                 break;
             case "404":
-                vm.message = "Pagina no encontrada"
+                vm.message = "Página no encontrada"
                 break;
             default:
                 vm.code = 500;

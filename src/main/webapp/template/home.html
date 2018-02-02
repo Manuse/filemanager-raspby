@@ -51,8 +51,8 @@
             </form>
         </div>
         <!-- div de alert de ui-boostrap -->
-        <div uib-alert ng-repeat="alert in vm.alerts" ng-class="[bold, 'alert-'+alert.type]" close="vm.closeAlert($index)" dismiss-on-timeout="3000">
-            <b class="pull-right alerta">{{alert.text}}</b>
+        <div uib-alert ng-repeat="alert in vm.alerts" ng-class="[bold, 'alert-'+alert.type]" close="vm.closeAlert($index)" class="bocadillo" dismiss-on-timeout="3000">
+            <b class="alerta">{{alert.text}}</b>
         </div>
     </div>
     <div class="row">

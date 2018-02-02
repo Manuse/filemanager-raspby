@@ -4,7 +4,7 @@ body {
   color: black;
 }
 
-.bajar{
+.bajar {
   padding: 20px;
   margin-top: 15%;
 }
@@ -19,7 +19,7 @@ table.no-border th {
   border: 0 !important;
 }
 
-.basura i{
+.basura i {
   font-size: 12px;
 }
 td a:hover,
@@ -28,7 +28,7 @@ td.basura:hover {
   cursor: pointer;
 }
 
-.mi-hover:hover{
+.mi-hover:hover {
   background: #e0e9e7;
 }
 
@@ -38,6 +38,24 @@ td i.glyphicon-level-up:hover {
   cursor: auto;
 }
 
-.alerta{
+.alerta {
   margin-top: 30px;
+}
+
+.bocadillo {
+  position: absolute;
+  left: 65.5%;
+  top: 25%;
+  border-radius: 5px;
+  background-color: rgb(49, 43, 43);
+  color: white;
+  padding: 10px;
+  width: 225px;
+  height: 40px;
+  font-family: "Indie Flower", cursive;
+  font-size: 1em;
+}
+
+ul.nav li a{
+  cursor: pointer;
 }
