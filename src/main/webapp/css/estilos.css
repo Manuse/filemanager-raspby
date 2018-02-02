@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f1edf1;
+  color: black;
+}
+
+table {
+  background: #ffffff;
+  color: black;
+}
+
+table.no-border td,
+table.no-border th {
+  border: 0 !important;
+}
+
+.basura i{
+  font-size: 12px;
+}
+td a:hover,
+td i:hover,
+td.basura:hover {
+  cursor: pointer;
+}
+
+.mi-hover:hover{
+  background: #e0e9e7;
+}
+
+td i.glyphicon-folder-open:hover,
+td i.glyphicon-file:hover,
+td i.glyphicon-level-up:hover {
+  cursor: auto;
+}
+
+.alerta{
+  margin-top: 5px;
+  padding: 10px;
+}
