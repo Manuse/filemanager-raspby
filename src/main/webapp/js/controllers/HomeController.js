@@ -195,6 +195,7 @@
                 }
             }, function (evt) {
                 file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                vm.porcent = file.progress;
                 if (vm.porcent < 50) {
                     vm.typeProgressBar = 'warning';
                 } else if (vm.porcent < 100) {

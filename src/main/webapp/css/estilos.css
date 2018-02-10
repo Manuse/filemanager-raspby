@@ -10,7 +10,7 @@ body {
 }
 
 table {
-  background: #ffffff;
+  background: #f1edf1; 
   color: black;
 }
 
@@ -38,24 +38,40 @@ td i.glyphicon-level-up:hover {
   cursor: auto;
 }
 
-.alerta {
-  margin-top: 30px;
+.bocadillo{
+  z-index: 1;
+  position: fixed;
+  left: 75.5%;
+  top: 85%;
+  width: 300px;
+  /* font-family: "Indie Flower", cursive; */
 }
 
-.bocadillo {
-  position: absolute;
+/* .bocadillo {
+  z-index: 1;
+  position: fixed;
   left: 65.5%;
   top: 25%;
   border-radius: 5px;
-  background-color: rgb(49, 43, 43);
-  color: white;
+  background-color: black; 
+  color: black;
   padding: 10px;
   width: 225px;
   height: 40px;
   font-family: "Indie Flower", cursive;
   font-size: 1em;
+} */
+/* 
+.myCSS3id{
+border: 5px solid #111;
+-moz-box-shadow: 35px 35px 7px #999999;
+-moz-border-bottom-right-radius: 15px;
+-moz-border-radius:25px;
+padding: 15px 25px;
+height: inherit;
+width: 300px;
 }
-
+*/
 ul.nav li a{
   cursor: pointer;
 }

@@ -37,6 +37,9 @@
                     <input type="radio" ng-model="vm.filter" value="file"> Archivos
                 </label>
             </div>
+            <div style="background: black;">
+                <uib-progressbar class="progress-striped active" value="vm.porcent" type="{{vm.typeProgressBar}}" ng-if="vm.porcent!=0">{{vm.porcent}}%</uib-progressbar>
+            </div>
         </div>
 
         <!-- botones creacion de carpetas y subida de archivos -->
@@ -99,9 +102,9 @@
         </div>
     </div>
     <!-- progress bar -->
-    <div>
+    <!-- <div>
         <uib-progressbar class="progress-striped active" value="vm.porcent" type="{{vm.vm.typeProgressBar}}" ng-if="vm.porcent!=0">{{vm.porcent}}%</uib-progressbar>
-    </div>
+    </div> -->
 
     <!-- div de alert de ui-boostrap -->
     <!-- <div uib-alert ng-repeat="alert in vm.alerts" ng-class="[bold, 'alert-'+alert.type]" close="vm.closeAlert($index)" dismiss-on-timeout="3000">
