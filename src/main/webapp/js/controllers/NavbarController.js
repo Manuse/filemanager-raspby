@@ -19,10 +19,18 @@
                     controller: 'ChangePasswordController',
                     controllerAs: 'vmm',
                     //size: 'sm',
+                    resolve: {
+                        item: function () {
+                            return null;
+                        }
+                    }
                 });
     
-                modalInstance.result.then(function () {
-    
+                modalInstance.result.then(function (result) {
+                    if(result){
+                        console.log("contraseña cambiada");                      
+                    }
+                    
                 }, function () {
     
                 });

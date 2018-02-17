@@ -92,7 +92,7 @@
                         <td class="text-center" ng-bind="file.size==null ? '-':(file.size | number)" />
                         <td class="text-center" ng-bind="vm.getLastModified(file.lastModified) | date:'dd/MM/yyyy HH:mm:ss'" />
                         <td ng-if="vm.permission===0" class="text-center">
-                            <button class="btn btn-xs btn-info basura" ng-click="vm.deleteFile($index,file)">
+                            <button class="btn btn-xs btn-info basura" ng-click="vm.deleteFile(vm.files.indexOf(file),file)">
                                 <i class="glyphicon glyphicon-trash"></i>
                             </button>
                         </td>

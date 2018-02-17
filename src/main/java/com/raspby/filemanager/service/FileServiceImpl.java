@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.raspby.filemanager.exceptions.GeneralException;
 import com.raspby.filemanager.exceptions.UnauthorizedException;
 import com.raspby.filemanager.model.CustomFile;
 import com.raspby.filemanager.persistence.AccessPath;
@@ -67,14 +68,14 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	@Transactional
-	public File downloadFile(short userId, String device, String path) throws FileNotFoundException {
+	public File downloadFile(short userId, String device, String path) {
 		File file = null;
 		if (authorized(userId, device, path)) {
 			file = new File(DEFAULT_PATH_WITH_BAR + device + path);
 			if (file.exists() && !file.isDirectory()) {
 				return file;
 			} else {
-				throw new FileNotFoundException("archivo no encontrado");
+				throw new GeneralException("Archivo no encontrado o es un directorio");
 			}
 		} else {
 			throw new UnauthorizedException("no autorizado");
@@ -86,7 +87,7 @@ public class FileServiceImpl implements FileService {
 	public List<CustomFile> getRoots(short userId) {
 		List<String> userDevice = accessPathRepository.findDistinctDeviceByUserId(userId);// .stream()
 		// .map(AccessPath::getDevice).collect(Collectors.toList());//
-		List<CustomFile> cf = new ArrayList<CustomFile>();	
+		List<CustomFile> cf = new ArrayList<CustomFile>();
 		List<String> devices = getCurrentDevices();
 		if (userDevice.contains(ALL_DEVICES)) {
 			for (String st : devices) {
@@ -153,14 +154,14 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	@Transactional
-	public CustomFile mkDir(short userId, String device, String path, String newDir) throws FileAlreadyExistsException {
+	public CustomFile mkDir(short userId, String device, String path, String newDir) {
 		if (authorized(userId, device, path)) {
 			File file = new File(DEFAULT_PATH_WITH_BAR + device + path + "/" + newDir);
 			if (!file.exists()) {
 				file.mkdirs();
 				return makeCustomFile(file, path.equals("/"));
 			} else {
-				throw new FileAlreadyExistsException("ya existe la carpeta");
+				throw new GeneralException("ya existe la carpeta");
 			}
 		} else {
 			throw new UnauthorizedException("no autorizado");
@@ -182,20 +183,22 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	@Transactional
-	public CustomFile uploadFile(short userId, String device, String path, long fileSize, MultipartFile file)
-			throws IOException {
+	public CustomFile uploadFile(short userId, String device, String path, long fileSize, MultipartFile file) {
 		if (authorized(userId, device, path)) {
 			File f = new File(DEFAULT_PATH_WITH_BAR + device + path + "/" + file.getOriginalFilename() + ".upload");
-			if (!f.exists()) {
-				f.createNewFile();
+			try {
+				if (!f.exists()) {
+					f.createNewFile();
+				}
+				FileOutputStream fos = new FileOutputStream(
+						DEFAULT_PATH_WITH_BAR + device + path + "/" + file.getOriginalFilename() + ".upload", true);
+				fos.write(file.getBytes());
+				fos.flush();
+				fos.close();
+			} catch (IOException e) {
+				throw new GeneralException(e.getMessage());
 			}
-			FileOutputStream fos = new FileOutputStream(
-					DEFAULT_PATH_WITH_BAR + device + path + "/" + file.getOriginalFilename() + ".upload", true);
-			fos.write(file.getBytes());
-			fos.flush();
-			fos.close();
 			f = new File(DEFAULT_PATH_WITH_BAR + device + path + "/" + file.getOriginalFilename() + ".upload");
-			System.err.println(f.length());
 			if (f.length() == fileSize) {
 				File renameFile = new File(DEFAULT_PATH_WITH_BAR + device + path + "/" + file.getOriginalFilename());
 				if (renameFile.exists()) {
@@ -219,13 +222,13 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	@Transactional
-	public boolean deleteFile(short userId, String device, String path) throws FileNotFoundException {
+	public boolean deleteFile(short userId, String device, String path) {
 		if (authorized(userId, device, path)) {
 			File file = new File(DEFAULT_PATH_WITH_BAR + device + path);
 			if (file.exists()) {
 				return deleteDir(file);
 			} else {
-				throw new FileNotFoundException("archivo no encontrado");
+				throw new GeneralException("archivo no encontrado");
 			}
 		} else {
 			throw new UnauthorizedException("no autorizado");
@@ -244,10 +247,33 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public List<String> getCurrentDevices() {
 		File file = new File(DEFAULT_PATH_WITH_BAR);
 		return Arrays.asList(file.list());
+	}
+
+	@Override
+	@Transactional
+	public List<String> searchPath(String device, String partialPath) {
+		File file = new File(DEFAULT_PATH_WITH_BAR + device + partialPath);
+		if (file.exists() && file.isDirectory()) {
+			return Arrays.asList(file.listFiles()).stream().filter(File :: isDirectory)
+					.map(f -> f.getPath().replace("\\", "/").replace(DEFAULT_PATH_WITH_BAR + device, ""))
+					.collect(Collectors.toList());
+		}
+		String path[] = partialPath.split("/");
+		String part = "";
+		if (path.length != 0) {
+			part = path[path.length - 1];
+			path[path.length - 1] = "";
+		}
+		String scope = part;
+		file = new File(DEFAULT_PATH_WITH_BAR + device + "/" + String.join("/", path));
+
+		return Arrays.asList(file.listFiles()).stream().filter(f -> f.getName().contains(scope) && f.isDirectory())
+				.map(f -> f.getPath().replace("\\", "/").replace(DEFAULT_PATH_WITH_BAR + device, ""))
+				.collect(Collectors.toList());
 	}
 
 }

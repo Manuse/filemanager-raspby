@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.raspby.filemanager.exceptions.GeneralException;
 import com.raspby.filemanager.model.CustomFile;
 import com.raspby.filemanager.persistence.Authority;
 import com.raspby.filemanager.persistence.Users;
@@ -49,7 +50,7 @@ public class FileController {
 
 	@Autowired
 	private FileService fileService;
-	
+
 	@Autowired
 	private UsersService usersService;
 
@@ -70,7 +71,7 @@ public class FileController {
 
 	@GetMapping("file/download")
 	public ResponseEntity<Resource> download(HttpServletRequest request, @RequestParam("userId") short userId,
-			@RequestParam("device") String device, @RequestParam("path") String path) throws IOException {
+			@RequestParam("device") String device, @RequestParam("path") String path) {
 
 		ServletContext context = request.getServletContext();
 		// path = "/"+path.replace("-", "/")+"/"+fileName;
@@ -89,7 +90,12 @@ public class FileController {
 		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
 		headers.add("Pragma", "no-cache");
 		headers.add("Expires", "0");
-		FileInputStream fis = new FileInputStream(file);
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			throw new GeneralException(e.getMessage());
+		}
 		headers.setContentLength(file.length());
 		return ResponseEntity.ok().headers(headers).contentLength(file.length())
 				.contentType(MediaType.parseMediaType(mimeType)).body(new InputStreamResource(fis));
@@ -98,8 +104,8 @@ public class FileController {
 	@RequestMapping(value = "/file/upload", method = RequestMethod.POST, headers = "Content-type=multipart/form-data")
 	public CustomFile uploadFile(@RequestParam(value = "file") MultipartFile file, @RequestParam("path") String path,
 			@RequestParam("fileSize") long fileSize, @RequestParam("userId") short userId,
-			@RequestParam("device") String device) throws IOException {
-		
+			@RequestParam("device") String device) {
+
 		System.err.println(path);
 		System.err.println(fileSize);
 		// System.err.println(file.getOriginalFilename());
@@ -107,18 +113,17 @@ public class FileController {
 		System.err.println(path + "/" + file.getOriginalFilename() + ".upload");
 		return fileService.uploadFile(userId, device, path, fileSize, file);
 	}
-	
+
 	@DeleteMapping("/file/delete")
 	public boolean deleteFile(@RequestParam("userId") short userId, @RequestParam("device") String device,
-			@RequestParam("path") String path) throws FileNotFoundException {
+			@RequestParam("path") String path) {
 		return fileService.deleteFile(userId, device, path);
 	}
 
 	@PostMapping("/file/mkdir")
 	public CustomFile mkDir(@RequestParam("userId") short userId, @RequestParam("device") String device,
-			@RequestParam("path") String path, @RequestParam("newDir") String newDir)
-			throws FileAlreadyExistsException {
-		
+			@RequestParam("path") String path, @RequestParam("newDir") String newDir) {
+
 		return fileService.mkDir(userId, device, path, newDir);
 	}
 
@@ -130,27 +135,31 @@ public class FileController {
 		}
 		return new File(path + ".upload").length();
 	}
-	
+
 	@GetMapping("/admin/file/current-devices")
-	public List<String>  getCurrentDevices(){
+	public List<String> getCurrentDevices() {
 		Users user = usersService.findByUsername(SecurityUtils.getCurrentLogin());
-		if(user.getAuthorities().contains(new Authority("super-admin"))) {
-		return fileService.getCurrentDevices();
+		if (user.getAuthorities().contains(new Authority("super-admin"))) {
+			return fileService.getCurrentDevices();
 		}
 		return fileService.getRoots(user.getId()).stream().map(CustomFile::getDevice).collect(Collectors.toList());
 	}
-	
-	
-	
 
+	@GetMapping("/admin/search-path")
+	public List<String> searchPath(@RequestParam("device") String device, @RequestParam("partialPath") String partialPath) {
+		return fileService.searchPath(device, partialPath);
+	}
+
+	
+	
 	static class FileResponse {
 
 		List<CustomFile> files;
 
 		Short permission;
-		
+
 		Double limitSpace;
-		
+
 		Double useSpace;
 
 		/**
@@ -191,7 +200,8 @@ public class FileController {
 		}
 
 		/**
-		 * @param limitSpace the limitSpace to set
+		 * @param limitSpace
+		 *            the limitSpace to set
 		 */
 		public void setLimitSpace(Double limitSpace) {
 			this.limitSpace = limitSpace;
@@ -205,13 +215,12 @@ public class FileController {
 		}
 
 		/**
-		 * @param usageSpace the usageSpace to set
+		 * @param usageSpace
+		 *            the usageSpace to set
 		 */
-		public void setUseSpace(Double usageSpace) {
+		public void setUseSpace(Double useSpace) {
 			this.useSpace = useSpace;
 		}
-		
-		
 
 	}
 }

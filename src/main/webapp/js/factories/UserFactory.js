@@ -3,7 +3,7 @@
 
     angular
         .module('myapp')
-        .factory('userFactory', userFactory);
+        .factory('UserFactory', userFactory);
 
     userFactory.$inject = ['$http'];
 

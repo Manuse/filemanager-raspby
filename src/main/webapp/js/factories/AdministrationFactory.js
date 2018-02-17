@@ -73,6 +73,14 @@
                         newPass: newPass
                     }
                 })
+            },
+            searchPath: function (device, partialPath) {
+                return $http.get("/admin/search-path", {
+                    params: {
+                        device: device,
+                        partialPath: partialPath
+                    }
+                })
             }
         };
 

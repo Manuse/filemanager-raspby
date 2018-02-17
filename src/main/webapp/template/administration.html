@@ -33,6 +33,9 @@
                         <td>
                             <button class="btn btn-xs btn-danger" ng-click="vm.deleteUser(vm.users.indexOf(user), user)">X</button>
                         </td>
+                        <td>
+                            <button class="btn btn-xs btn-info" ng-click="vm.changePassword(user)">Cambiar contraseña</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -67,7 +70,7 @@
             <!-- formulario añadir ruta -->
             <form ng-submit="vm.createAccessPath()">
                 <select ng-model="vm.device" ng-options="item as item for item in vm.devices"></select>
-                <input type="text" placeholder="Nueva ruta" ng-model="vm.newPath" ng-disabled="vm.isAdmin">
+                <input  list="partial" type="text" ng-keyup="vm.searchPath()" placeholder="Nueva ruta" ng-model="vm.newPath" ng-disabled="vm.isAdmin">
                 <select ng-model="vm.permission">
                     <option value="0">Escritura</option>
                     <option value="1">Lectura</option>
@@ -80,6 +83,9 @@
                 <button type="submit">Añadir ruta de acceso</button>
                 <button type="reset">reset</button>
             </form>
+            <datalist id="partial">
+                <option value="{{partialPath}}" ng-repeat="partialPath in vm.partialPaths">
+            </datalist>
         </div>
     </div>
 

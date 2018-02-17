@@ -13,6 +13,7 @@
         vm.devices = [];
         vm.selectUser = null;
         vm.roles = [];
+        vm.partialPaths = [];
 
         if (Session.userRoles.indexOf('super-admin') !== -1) {
             vm.roles = [{
@@ -74,6 +75,28 @@
                 console.error(error);
             })
 
+        }
+
+        vm.changePassword = function(user){
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: 'modals/mChangePassword.html',
+                controller: 'ChangePasswordController',
+                controllerAs: 'vmm',
+                resolve: {
+                    msg: function () {
+                        return user.id;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (result) {
+                if(result){
+                    console.log("password cambiada");            
+                }
+            }, function () {
+
+            });
         }
 
         function addAccessPath() {
@@ -194,7 +217,7 @@
 
         vm.setSelectUser = function (user) {
             vm.selectUser = user;
-            vm.permission = 1;
+            vm.permission = '1';
             vm.isAdmin = vm.selectUser.authorities.map(function (x) {
                 return x.name
             }).indexOf('admin') !== -1
@@ -220,6 +243,16 @@
             AdministrationFactory.getAccessPath(vm.selectUser.id).then(function (response) {
                 vm.accessPaths = response.data;
             }, function (error) {
+                console.error(error);
+            })
+        }
+
+        vm.searchPath=function(){          
+            AdministrationFactory.searchPath(vm.device, vm.newPath == null?"":vm.newPath).then(function(response){
+                vm.partialPaths=response.data;
+                console.log(vm.partialPaths);
+                
+            },function(error){
                 console.error(error);
             })
         }
