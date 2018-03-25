@@ -69,7 +69,7 @@ public class FileController {
 		return fileResponse;
 	}
 
-	@GetMapping("file/download")
+	@GetMapping("/file/download")
 	public ResponseEntity<Resource> download(HttpServletRequest request, @RequestParam("userId") short userId,
 			@RequestParam("device") String device, @RequestParam("path") String path) {
 

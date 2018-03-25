@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -50,7 +51,7 @@ public class Users extends IdEntity{
 	private List<Authority> authorities = new ArrayList<Authority>();
 	
 	@OneToMany(mappedBy="user")
-	@JsonIgnore
+	@JsonBackReference
 	private List<AccessPath> accessPath;
 	
 	/**
@@ -123,15 +124,5 @@ public class Users extends IdEntity{
 	public void setAccessPath(List<AccessPath> accessPath) {
 		this.accessPath = accessPath;
 	}
-
-	@Override
-	public String toString() {
-		return password+" "+username;
-	}
-	
-	
-	
-	
-	
 	
 }

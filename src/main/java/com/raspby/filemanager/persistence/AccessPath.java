@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 /**
  * @author Manuel
  *
@@ -38,6 +40,7 @@ public class AccessPath extends IdEntity{
 	
 	@ManyToOne
 	@JoinColumn(name="user_id")
+	@JsonManagedReference
 	private Users user;
 
 	/**

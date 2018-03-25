@@ -84,7 +84,7 @@
                 controller: 'ChangePasswordController',
                 controllerAs: 'vmm',
                 resolve: {
-                    msg: function () {
+                    item: function () {
                         return user.id;
                     }
                 }

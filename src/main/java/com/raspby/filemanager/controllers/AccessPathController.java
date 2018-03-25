@@ -22,15 +22,9 @@ import com.raspby.filemanager.service.AccessPathService;
 @RestController
 public class AccessPathController {
 
-	private final AccessPathService accessPathService;
-
-	/**
-	 * @param accessPathService
-	 */
 	@Autowired
-	public AccessPathController(AccessPathService accessPathService) {
-		this.accessPathService = accessPathService;
-	}
+	private AccessPathService accessPathService;
+
 
 	@PostMapping("/admin/access-path")
 	public AccessPath addAccessPath(@RequestBody AccessPath accessPath) {
