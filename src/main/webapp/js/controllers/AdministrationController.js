@@ -14,8 +14,9 @@
         vm.selectUser = null;
         vm.roles = [];
         vm.partialPaths = [];
+        vm.alerts = [];
 
-        if (Session.userRoles.indexOf('super-admin') !== -1) {
+        if (Session.userRoles.indexOf('filemanager-super-admin') !== -1) {
             vm.roles = [{
                 id: 1,
                 name: "User"
@@ -158,12 +159,12 @@
             if (vm.newPassword === vm.newPassword2) {
                 var auth = [{
                     id: 1,
-                    name: "user"
+                    name: "filemanager-user"
                 }];
                 if (vm.newRole == 2) {
                     auth.push({
                         id: 2,
-                        name: "admin"
+                        name: "filemanager-admin"
                     });
                 }
                 var user = {
@@ -174,9 +175,11 @@
                 }
                 AdministrationFactory.addUser(user).then(function (response) {
                     vm.users.push(response.data);
+                    vm.newUsername = '';
+                    vm.newPassword = '';
+                    vm.newPassword2 = '';
                 }, function (error) {
                     console.error(error);
-
                 })
             } else {
                 console.log("mal pass");
@@ -220,7 +223,7 @@
             vm.permission = '1';
             vm.isAdmin = vm.selectUser.authorities.map(function (x) {
                 return x.name
-            }).indexOf('admin') !== -1
+            }).indexOf('filemanager-admin') !== -1
             if (vm.isAdmin) {
                 vm.newPath = "/";
             }
@@ -254,6 +257,17 @@
                 
             },function(error){
                 console.error(error);
+            })
+        }
+
+        vm.closeAlert = function (alert) {
+            vm.alerts.splice(alert, 1);
+        }
+
+        function addAlert(text, type) {
+            vm.alerts.push({
+                text: text,
+                type: type
             })
         }
 

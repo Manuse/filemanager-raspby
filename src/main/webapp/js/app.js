@@ -3,8 +3,8 @@
     /////////////////////////////////////////////////////////////////////////////////
     app.constant('USER_ROLES', {
         all: '*',
-        admin: 'admin',
-        user: 'user'
+        admin: 'filemanager-admin',
+        user: 'filemanager-user'
     });
     ////////////////////////////////////////////////////////////////////////////////////////
     app.config(function ($routeProvider, USER_ROLES) {

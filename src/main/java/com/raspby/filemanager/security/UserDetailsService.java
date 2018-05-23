@@ -2,6 +2,7 @@ package com.raspby.filemanager.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,11 +38,10 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UserNotEnabledException("User " + username + " was not enabled");
         }
 
-        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        for (Authority authority : user.getAuthorities()) {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority.getName());
-            grantedAuthorities.add(grantedAuthority);
-        }
+        Collection<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+																		.filter(u -> u.getName().contains("filemanager"))
+																		.map(u -> new SimpleGrantedAuthority(u.getName()))
+																		.collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(),
                 grantedAuthorities);

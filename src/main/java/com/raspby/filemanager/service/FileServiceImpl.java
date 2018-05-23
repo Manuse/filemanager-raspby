@@ -129,8 +129,7 @@ public class FileServiceImpl implements FileService {
 		CustomFile cf = new CustomFile();
 		// linux
 		// String device = file.getAbsolutePath().replace("\\", "/").split("/")[1];
-		// String path = file.getAbsolutePath().replace("\\",
-		// "/").replace(DEFAULT_PATH_WITH_BAR, "").replace(device, "");
+		// String path = file.getAbsolutePath().replace("\\","/").replace(DEFAULT_PATH_WITH_BAR, "").replace(device, "");
 		// windows src
 		String device = file.getPath().replace("\\", "/").split("/")[1];
 		String path = file.getPath().replace("\\", "/").replace(DEFAULT_PATH_WITH_BAR + device, "");

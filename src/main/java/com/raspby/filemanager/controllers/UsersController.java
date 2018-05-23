@@ -3,6 +3,7 @@
  */
 package com.raspby.filemanager.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raspby.filemanager.persistence.AccessPath;
+import com.raspby.filemanager.persistence.Authority;
 import com.raspby.filemanager.persistence.Users;
 import com.raspby.filemanager.service.UsersService;
 
@@ -36,7 +39,13 @@ public class UsersController {
 	}
 	
 	@PostMapping("/admin/user")
-	public Users saveUser(@RequestBody Users users) {
+	public Users saveUser(@RequestBody UsersRequest usersRequest) {
+		Users users=new Users();
+		users.setAccessPath(new ArrayList<AccessPath>());
+		users.setAuthorities(usersRequest.getAuthorities());
+		users.setPassword(usersRequest.getPassword());
+		users.setEnabled(usersRequest.isEnabled());
+		users.setUsername(usersRequest.getUsername());
 		return usersService.saveUser(users);
 	}
 	
@@ -58,5 +67,53 @@ public class UsersController {
 	@PutMapping("/admin/change-enabled")
 	public Users changeEnabled(@RequestParam("id")short id) {
 		return usersService.changeEnable(id);
+	}
+	
+	static class UsersRequest{
+		
+//		username: vm.newUsername,
+//        password: vm.newPassword,
+//        enabled: true,
+//        authorities: auth
+		String username;
+		
+		String password;
+		
+		boolean enabled;
+		
+		List<Authority> authorities;
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+		public boolean isEnabled() {
+			return enabled;
+		}
+
+		public void setEnabled(boolean enabled) {
+			this.enabled = enabled;
+		}
+
+		public List<Authority> getAuthorities() {
+			return authorities;
+		}
+
+		public void setAuthorities(List<Authority> authorities) {
+			this.authorities = authorities;
+		}
+		
 	}
 }

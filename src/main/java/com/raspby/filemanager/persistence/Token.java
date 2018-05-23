@@ -24,7 +24,7 @@ public class Token {
     @Column(name="value")
     private String value;
 
-    @Column(name="date")
+    @Column(name="dates")
     private Date date;
 
     @Column(name = "ip_address")

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.raspby.filemanager.exceptions.GeneralException;
 
@@ -16,7 +17,7 @@ import com.raspby.filemanager.exceptions.GeneralException;
  * @author Manuel
  *
  */
-@ControllerAdvice
+@RestControllerAdvice
 public class GeneralExceptionHandler {
 
 	@ExceptionHandler(GeneralException.class)

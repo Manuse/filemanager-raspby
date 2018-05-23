@@ -1,24 +1,24 @@
 <div class="container">
-    <div class="col-md-offset-3 col-md-6 col-md-offset-3 bajar">
-        <form class="form-inline" ng-submit="vm.login()" style="padding:25px; border:2px ridge rgb(224, 219, 219)">
-            <div class="form-group">
-                <label>Nombre </label>
-                <input type="text" ng-model="vm.username">
-                <span style="margin-right: 10px;"></span>
-                <label for="">Contraseña</label>
-                <input type="text" ng-model="vm.password">
-                <br>
+    <div class="col-md-offset-2 col-md-8 col-md-offset-2 bajar col-xs-12">
+        <form ng-submit="vm.login()" style="padding:25px; border:2px ridge rgb(224, 219, 219)">
+            <div class="form-inline">
+                <label style="width: 10%" class="label-login">Nombre </label>
+                <input type="text" style="width: 35%" class="form-control input-login" ng-model="vm.username">
+                <span class="span-pull" style="margin-right: 5%;"></span>
+
+                <label class="label-login" style="width: 15%">Contraseña </label>
+                <input type="password" style="width: 32%" class="form-control input-login" ng-model="vm.password">
+            </div>
+            <br>
+            <div class="form-inline">
                 <input type="checkbox" ng-model="vm.rememberMe" />
-                <small> Remember me</small>
-                <span ng-show="vm.authenticationError()" class="help-block">
-                    Please check your credentials and try again.
+                <small> Recordar</small>
+                <span ng-show="vm.authenticationError()" class="help-block" style="font-size:0.8em;">
+                    Comprueba tus credenciales
                 </span>
-                <br>
-                <br>
-                <div class="text-center">
-                    <input class="btn btn-primary btn-block" type="submit" value="enviar">
-                </div>
+            </div>
+            <br>
+            <input class="btn btn-primary btn-block" type="submit" value="enviar">
         </form>
-        </div>
     </div>
 </div>

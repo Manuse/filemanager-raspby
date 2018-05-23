@@ -15,7 +15,7 @@ id_authority int(1) unsigned);
 create table if not exists token (
 series varchar(50) primary key,
 value varchar(70),
-date timestamp,
+dates timestamp,
 ip_address varchar(50),
 user_agent varchar(200),
 user_login varchar(50));

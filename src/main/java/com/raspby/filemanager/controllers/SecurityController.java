@@ -39,7 +39,7 @@ public class SecurityController {
 		return user;
 	}
 
-	@PreAuthorize("hasAuthority('admin')")
+	@PreAuthorize("hasAuthority('filemanager-super-admin')")
 	@GetMapping("/security/tokens")
 	public @ResponseBody List<Token> getTokens() {
 		List<Token> tokens = tokenRepository.findAll();

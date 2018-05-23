@@ -18,7 +18,6 @@
                     templateUrl: 'modals/mChangePassword.html',
                     controller: 'ChangePasswordController',
                     controllerAs: 'vmm',
-                    //size: 'sm',
                     resolve: {
                         item: function () {
                             return null;
