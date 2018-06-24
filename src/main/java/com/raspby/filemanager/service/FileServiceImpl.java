@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,15 +32,16 @@ import com.raspby.filemanager.util.MegabytesConverter;
 @Service
 public class FileServiceImpl implements FileService {
 
-	// private static Logger h;
+	private static Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
-	public static final String DEFAULT_PATH = "ejemplo";
+	//public static final String DEFAULT_PATH = "ejemplo";
+	public static final String DEFAULT_PATH="/media";
 	public static final String DEFAULT_PATH_WITH_BAR = DEFAULT_PATH + "/";
 	public static final String ALL_DEVICES = "*";
 	public static final short READ = 1;
 	public static final short WRITE = 0;
 
-	// public static final String DEFAULT_PATH="/media";
+	
 
 	@Autowired
 	private AccessPathRepository accessPathRepository;
@@ -46,6 +49,9 @@ public class FileServiceImpl implements FileService {
 	@Override
 	@Transactional
 	public List<CustomFile> getRootFiles(short userId, String device) {
+		
+		logger.debug("Cargando archivos del dispositivo: "+device);
+		
 		List<CustomFile> customFiles = new ArrayList<CustomFile>();
 		File file = null;
 		if (!accessPathRepository.findDistinctDeviceByUserId(userId).contains(ALL_DEVICES)) {
@@ -199,6 +205,9 @@ public class FileServiceImpl implements FileService {
 			}
 			f = new File(DEFAULT_PATH_WITH_BAR + device + path + "/" + file.getOriginalFilename() + ".upload");
 			if (f.length() == fileSize) {
+				
+				logger.debug("archivo "+file.getOriginalFilename()+" subido completo");
+				
 				File renameFile = new File(DEFAULT_PATH_WITH_BAR + device + path + "/" + file.getOriginalFilename());
 				if (renameFile.exists()) {
 					renameFile.delete();

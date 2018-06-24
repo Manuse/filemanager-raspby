@@ -15,6 +15,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -38,6 +40,7 @@ import com.raspby.filemanager.persistence.Authority;
 import com.raspby.filemanager.persistence.Users;
 import com.raspby.filemanager.security.SecurityUtils;
 import com.raspby.filemanager.service.FileService;
+import com.raspby.filemanager.service.FileServiceImpl;
 import com.raspby.filemanager.service.UsersService;
 
 /**
@@ -47,6 +50,8 @@ import com.raspby.filemanager.service.UsersService;
  */
 @RestController
 public class FileController {
+	
+	private static Logger logger = LoggerFactory.getLogger(FileController.class);
 
 	@Autowired
 	private FileService fileService;
@@ -72,9 +77,10 @@ public class FileController {
 	@GetMapping("/file/download")
 	public ResponseEntity<Resource> download(HttpServletRequest request, @RequestParam("userId") short userId,
 			@RequestParam("device") String device, @RequestParam("path") String path) {
+		
+		logger.debug("Descargando archivo del dispositivo "+device+" en la ruta "+path);
 
 		ServletContext context = request.getServletContext();
-		// path = "/"+path.replace("-", "/")+"/"+fileName;
 		System.err.println(userId + " " + device + " " + path);
 		File file = fileService.downloadFile(userId, device, path);
 		String mimeType = context.getMimeType(file.getAbsolutePath());
@@ -106,17 +112,17 @@ public class FileController {
 			@RequestParam("fileSize") long fileSize, @RequestParam("userId") short userId,
 			@RequestParam("device") String device) {
 
-		System.err.println(path);
-		System.err.println(fileSize);
-		// System.err.println(file.getOriginalFilename());
-		// System.err.println(file.getSize());
-		System.err.println(path + "/" + file.getOriginalFilename() + ".upload");
+
+		logger.debug("Subiendo el "+file.getOriginalFilename()+" archivo al dispositivo "+device+" en la ruta "+path+" de tamaño "+fileSize);
+		
 		return fileService.uploadFile(userId, device, path, fileSize, file);
 	}
 
 	@DeleteMapping("/file/delete")
 	public boolean deleteFile(@RequestParam("userId") short userId, @RequestParam("device") String device,
 			@RequestParam("path") String path) {
+		
+		logger.debug("Borrando archivo del dispositivo "+device+" en la ruta "+path);
 		return fileService.deleteFile(userId, device, path);
 	}
 
@@ -124,6 +130,8 @@ public class FileController {
 	public CustomFile mkDir(@RequestParam("userId") short userId, @RequestParam("device") String device,
 			@RequestParam("path") String path, @RequestParam("newDir") String newDir) {
 
+		logger.debug("creando carperta en el dispositivo "+device+" en la ruta "+path +" con nombre "+newDir);
+		
 		return fileService.mkDir(userId, device, path, newDir);
 	}
 
